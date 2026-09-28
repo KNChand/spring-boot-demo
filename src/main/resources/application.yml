@@ -1,0 +1,18 @@
+resilience4j:
+
+  retry:
+    instances:
+      paymentService:
+        max-attempts: 3
+        wait-duration: 2s
+        retry-exceptions:
+          - java.lang.RuntimeException
+
+  circuit breaker:
+    instances:
+      paymentService:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 10s
