@@ -1,0 +1,35 @@
+
+name: Deploy to AWS ECS
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Select Environment
+        required: true
+        type: choice
+        options:
+          - DEV
+          - QA
+          - PROD
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Display selected environment
+        run: |
+          echo "Selected Environment: ${{ inputs.environment }}"
+          echo "AWS Region: ${{ vars.AWS_REGION }}"
+          echo "ECS Cluster: ${{ vars.ECS_CLUSTER }}"
+          echo "ECS Service: ${{ vars.ECS_SERVICE }}"
